@@ -43,7 +43,7 @@ body{
 #contentheadeWraper{
     display: flex;
     flex-direction: column;
-    width: 100;
+    width: 100%;
     margin:2em 0;
 }
 #title{
@@ -52,7 +52,7 @@ body{
     text-align: center;
     text-transform: uppercase;
     color: #4c5056;
-    font-family:font-family: 'Muli', sans-serif;
+    font-family:'Muli', sans-serif;
 }
 #search{
     width: 100%;
@@ -89,10 +89,9 @@ body{
     height: 100px;
     width: 100px;
     border-radius: 50%;
-    flex-grow: 1fr;
 }
 .cardsInfo{
-    width: 1fr;
+    
     margin-left: 15px;
     text-align: left;
 }
@@ -116,6 +115,9 @@ body{
     border-radius: 10px;
     width: 30%;
     height: 70%; 
+    max-width: 350px;
+    max-height: 450px;
+    min-height: 450px;
     margin: auto;
     padding: 1em;
     transition-property: all;

@@ -2,9 +2,8 @@ const employeesProfilesContainer = document.getElementById('employeesProfilesCon
 const overlay = document.getElementById('overlay');
 const body = document.getElementsByName('body');
 var cardIndex;
-const employees = [];
 var numberOfEmployees=0;
-var employeesRawData
+var employeesRawData;
 /*========================================================
 
 =========================================================*/
@@ -18,7 +17,7 @@ var employeesRawData
         .then(function(data){
             employeesRawData= data.results;
             numberOfEmployees= employeesRawData.length;
-
+            // Generate HTML for the employee profile
             for(var i = 0; i<numberOfEmployees; i++){
                 
                 const card = document.createElement('li');
@@ -33,6 +32,7 @@ var employeesRawData
                         <p class="cities">${employeesRawData[i].location.city}</p>
                     </div>
                     ` 
+                    // append the users (li) to the container
                 employeesProfilesContainer.appendChild(card);
             }
            
@@ -48,13 +48,22 @@ var employeesRawData
             });
                 }
     })
+    // Add Filter Functionality that filters card
     .then(function(){
-        var test = document.getElementById('close');
-        console.log(test);
-    })
+        var searchEmployee=$("#search");
+        var members = $(".cards");
+        var names = $(".names");
+        searchEmployee.keyup(function(){
+         var value = $(this).val().toLowerCase();
+            console.log(names);
+         $(".names").filter(function(){
+              $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1);
+         });
+    
+        });
+    });
    
   
-
 
       
     
@@ -77,7 +86,6 @@ let generateModalHTML = function(employeesRawData, i){
                     mm = '0' + mm;
                   }
                 let employeeDob = `${mm}/${dd}/${year}`;
-//                console.log(employeeDob);
                 modal.id=i;
                 modal.className='modal';
                 modal.innerHTML = 
@@ -108,16 +116,20 @@ let generateModalHTML = function(employeesRawData, i){
                 overlay.className="OverlayHide";
                 modal.style.display = "none";
             });
+            
 //Hide left button when employee profile is less than or = 0
 
 
            if(i>=11){
                rightArrow.remove();
            }
+
 //Hide right button when employee profile is more than or equal to 11    
            if(i<=0){
               leftArrow.remove();
               }
+
+
 // conditionally add and remove Modal when left/right button is clicked  
         if(i>=0 ){
             $( document ).ready(function() {
@@ -130,6 +142,7 @@ let generateModalHTML = function(employeesRawData, i){
             }); 
             });
             }
+
        if(i<=11 ){
             $( document ).ready(function() {
             leftArrow.click(function(){
@@ -144,4 +157,3 @@ let generateModalHTML = function(employeesRawData, i){
 
 }
 
-// Add search Button
