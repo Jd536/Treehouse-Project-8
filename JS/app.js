@@ -1,99 +1,147 @@
-const employeeList = document.getElementById("employeesContainer");
-const h3s= document.getElementsByClassName('names'); 
-const emailsContainer= document.getElementsByClassName('emails'); 
-const citiesContainer= document.getElementsByClassName('cities'); 
-const overlay = document.getElementById("overlay");
-const profileContainer = document.getElementById("profile");
-const fetchData =fetch('https://randomuser.me/api/?results=12')
-    .then( function (response){
-           return response.json();
-    });
+const employeesProfilesContainer = document.getElementById('employeesProfilesContainer');
+const overlay = document.getElementById('overlay');
+const body = document.getElementsByName('body');
+var cardIndex;
+const employees = [];
+var numberOfEmployees=0;
+var employeesRawData
+/*========================================================
 
-   fetchData.then (function(data){
-      const employees= data.results;
-//      console.log(employees);
-      const employeesPictures = employees.map(employee => employee.picture.medium);
-      employeesPictures.forEach(picture => {
-          createitems(picture);
+=========================================================*/
 
-          
-      });
-    });
+// Fetch Random user Data from randomuser.me
+
+ const fetchData= fetch('https://randomuser.me/api/?results=12&nat=us')
+    .then(response=> response.json());
+
+    fetchData
+        .then(function(data){
+            employeesRawData= data.results;
+            numberOfEmployees= employeesRawData.length;
+
+            for(var i = 0; i<numberOfEmployees; i++){
+                
+                const card = document.createElement('li');
+                card.id=i;
+                card.className='cards';
+                card.innerHTML = 
+                    `
+                    <img class="profilePicture" src='${employeesRawData[i].picture.large}' alt="picture of">
+                    <div class="cardsInfo">
+                        <p class="names">${employeesRawData[i].name.first +" "+ employeesRawData[i].name.last}</p>
+                        <p class="emails">${employeesRawData[i].email}</p>
+                        <p class="cities">${employeesRawData[i].location.city}</p>
+                    </div>
+                    ` 
+                employeesProfilesContainer.appendChild(card);
+            }
+           
+        })
+        .then(function(){
+            const cards =document.getElementsByClassName('cards');
+            for(var i=0; i<cards.length;i++){
+                var card =cards[i];
+                card.addEventListener("click",function(){
+                overlay.className= "overlayShow";
+                    cardIndex=this.id;
+                    generateModalHTML(employeesRawData, cardIndex);
+            });
+                }
+    })
+    .then(function(){
+        var test = document.getElementById('close');
+        console.log(test);
+    })
+   
+  
 
 
-// Image .First and Last Name .Email .City
+      
+    
+// Create a modal HTML (create a calll back function that can be used in the click event) street name and number, city, state, and postcode. 
 
-// This function add images to the list items, create the list items and append them to the ul
-function createitems(picture, fullname, email,city){
-    const newItem = document.createElement('li');
-    newItem.className = "cards";
-     newItem.innerHTML = ` <img src= '${picture}' class="photos"  alt="employe name..."> 
-     <div class=" cardsInfo">
-        <h3 class= "names"></h3>
-        <p class = "emails"></p>
-        <p class = " cities"></p>
-     </div>`
-        ;
-     employeeList.appendChild(newItem);
 
-    //  newItem.addEventListener("click", function(li){
-    //         const profile = document.getElementById('profile');
-    //         profile.style.display="block";
-    //        profile.appendChild(li.target);
-    //         overlay.style.display ='block';
-    //        console.log(li.target);
-          
-    //  });
+let generateModalHTML = function(employeesRawData, i){
+                 numberOfEmployees= employeesRawData.length;
+//                 console.log(numberOfEmployees);
+                    let index = i;
+    const modal = document.createElement('div');
+                let dateOfBirth= new Date(employeesRawData[i].dob.date);
+                let dd = dateOfBirth.getDate();
+                let mm = dateOfBirth.getMonth() + 1;
+                let year = dateOfBirth.getFullYear();
+                if (dd < 10) {
+                    dd = '0' + dd;
+                  }
+                if (mm < 10) {
+                    mm = '0' + mm;
+                  }
+                let employeeDob = `${mm}/${dd}/${year}`;
+//                console.log(employeeDob);
+                modal.id=i;
+                modal.className='modal';
+                modal.innerHTML = 
+                 `
+                        <i class="fas fa-times close" id="close" ></i>
+                        <i class="fas fa-angle-left leftArrow"></i>
+                        <i class="fas fa-angle-right rightArrow"></i>
+                    <img class="modalPicture" src='${employeesRawData[i].picture.large}' alt="picture of">
+                    <div class="modalinfo">
+                        <p class="modalnames">${employeesRawData[i].name.first +" "+ employeesRawData[i].name.last}</p>
+                        <p class="modalemails">${employeesRawData[i].email}</p>
+                        <p class="modalcities">${employeesRawData[i].location.city}</p>
+                    </div>
+                    <div class="modalInfo2">
+                        <p class="modalphone">${employeesRawData[i].cell}</p>
+                        <p class="modaladdress">${employeesRawData[i].location.street} ${employeesRawData[i].location.city} ,  ${employeesRawData[i].location.state} ${employeesRawData[i].location.postcode }</p>
+                        <p class="birthdate"> Birthday : ${employeeDob}</p>
+                    </div>
+               
+               ` 
+                    overlay.appendChild(modal);
+// Add click function to the Modal buttons
+        const close = $('.close');
+        const  rightArrow = $('.rightArrow');
+        const  leftArrow  = $('.leftArrow');
+         
+            close.click(function(){
+                overlay.className="OverlayHide";
+                modal.style.display = "none";
+            });
+//Hide left button when employee profile is less than or = 0
+
+
+           if(i>=11){
+               rightArrow.remove();
+           }
+//Hide right button when employee profile is more than or equal to 11    
+           if(i<=0){
+              leftArrow.remove();
+              }
+// conditionally add and remove Modal when left/right button is clicked  
+        if(i>=0 ){
+            $( document ).ready(function() {
+            rightArrow.click(function(){
+                    modal.remove();
+                    CarIndex=parseInt(modal.id);
+                    cardIndex++;
+                generateModalHTML(employeesRawData, cardIndex);
+                console.log(cardIndex);
+            }); 
+            });
+            }
+       if(i<=11 ){
+            $( document ).ready(function() {
+            leftArrow.click(function(){
+                    modal.remove();
+                    CarIndex=parseInt(modal.id);
+                    cardIndex--;
+                generateModalHTML(employeesRawData, cardIndex);
+//                console.log(cardIndex);
+            }); 
+            });
+            }
+
 }
 
-
-// get first name and last Names
-
-fetchData.then( function getinfo(data){
-    const fullnames = data.results;
-    const names = fullnames.map(fullname => `${fullname.name.first} ` + `${fullname.name.last}`);
-//    console.log(names);
-    for(var i = 0; i<names.length; i++){
-        var namecontainers=Array.from(h3s);
-        namecontainers[i].innerText = names[i];
-//        console.log(names[i]);
-    }
-});
-// get emails
-fetchData.then( function getinfo(data){
-    const emails = data.results;
-    
-    const emailList = emails.map(email => email.email);
-//    console.log(emailList);
-
-    for(var i = 0; i<emailList.length; i++){
-//        console.log(emailList[i]);
-        let emailsContainers=Array.from(emailsContainer);
-        emailsContainers[i].innerText = emailList[i];
-        // eemailsContainers[i].innerText = emailList[i];
-       
-    }
-});
-// get cities
-
-fetchData.then( function getinfo(data){
-    const citieS = data.results;
-    
-    const citiesList = citieS.map(citie => citie.location.city);
-//    console.log(citiesList);
-   
-    for(var i = 0; i<citiesList.length; i++){
-//        console.log(citiesList[i]);
-    
-        let citiesContainers=Array.from(citiesContainer);
-        citiesContainers[i].innerText = citiesList[i];
-     
-       
-    }
-});
- 
-
-
-var cards = $('cards');
-// var cardsArray =$.makeArray(cards);
-console.log(cards);
+// Add search Button

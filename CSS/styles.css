@@ -5,128 +5,211 @@
 }
 
 body{
-    max-width: 1040px;
+    max-width: 80%;
+    min-width: 300px;
     height: 100vh;
     margin: 0 auto;
     text-align: center;
 }
-
-
-h1{
-    text-transform: uppercase;
-    text-align: left;
-    color: #404142;
-    margin-top:2em 0 0 0;
-    padding: 5px 0;
-    font-family: 'Muli', sans-serif;
-    font-weight:light;
-    font-size: 25px;
+.overlayHide{
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.0);
+  z-index: 2;
+  transition-property: all;
+  transition-duration: 5s;
 }
-.container_main{
- width: 100%;
- height: 100vh;
- display: flex;
- flex-direction: column;
+.overlayShow{
+  position: fixed;
+  display: flex;  
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+  transition-property: all;
+  transition-duration: 1.5s;
 }
-
-#employeesContainer{
-    margin-top: 1em;
-    padding: 0;
+#contentheadeWraper{
+    display: flex;
+    flex-direction: column;
+    width: 100;
+    margin:2em 0;
+}
+#title{
     width: 100%;
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #4c5056;
+    font-family:font-family: 'Muli', sans-serif;
+}
+#search{
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+}
+#employeesProfilesContainer{
+    width: 100%;
+    margin:1em auto;
+    padding: 0;
     display: grid;
-    grid-template-columns: minmax(350px, 60%);
-    justify-content: center;
     grid-gap: 20px;
-    grid-template-rows: repeat (3,150px); 
+ 
 }
 
 .cards{
-    background: white;
     display: flex;
     flex-direction: row;
-    border: solid 1px silver;
-    border-radius: 10px;
-    justify-content: center;
+    height: 150px;
+    border: 1px solid grey;
+    border-radius: 5px;
     align-items: center;
-    padding: .5em;
+    justify-content: center;
+    padding: 5px;
+    
 }
 .cards:hover{
     transform: scale(1.05);
-    box-shadow: 3px 3px 22px 1px silver;
+    box-shadow:  0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     transition-property: all;
-    transition-duration: .5s;
-    cursor: pointer;
-        
+    transition-duration: .6s;
 }
-.photos{
+.profilePicture{
     height: 100px;
     width: 100px;
-    border-radius: 50%;   
-    margin-left: 0;
-
+    border-radius: 50%;
+    flex-grow: 1fr;
 }
-
 .cardsInfo{
-    margin-left: 10px;
+    width: 1fr;
+    margin-left: 15px;
+    text-align: left;
 }
-
-.cities,
 .names{
-   text-transform: capitalize;
+    font-weight: bold;
+    color: #393e44;
 }
-.cities,
-.emails{
+.emails, 
+.cities{
     color:silver;
 }
+.names,
+.cities{
+    text-transform: capitalize;
+}
 
-
-#overlay{
-    position: fixed;
-    display: none;
+.modal{
+    display: inline-block;
+    background:#fff;
+    min-width: 300px;
+    border-radius: 10px;
+    width: 30%;
+    height: 70%; 
+    margin: auto;
+    padding: 1em;
+    transition-property: all;
+    transition-duration: 7s;
+}
+.modalContent{
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2;
-    cursor: pointer;
-}
-
-#profile{
-    display: none;
-    width: 33%;
-    height: 200px;
-    line-height: 200px;
-    position: fixed;
-    top: 50%; 
-    left: 50%;
-    margin-top: -100px;
-    margin-left: -150px;
-    background-color: fff;
-    border-radius: 5px;
-    text-align: center;
-    z-index: 11; /* 1px higher than the overlay layer */
-}
-
-@media only screen and (min-width: 720px) {
-    
-#employeesContainer{
-    margin-top: 1em;
     padding: 0;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
 }
+.modalPicture{
+    border-radius: 50%;
+    margin-top: 1.5em;
+}
+.close{
+    float: right;
+    font-size: 2em;
+    color: #393e44;
 }
 
-
-@media only screen and (min-width: 960px) {
+.close:hover{
+    cursor: pointer;
     
-#employeesContainer{
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: repeat (3,150px); 
 }
+
+.leftArrow{
+    float: left;
+     margin-top: 50%;
+    font-size: 3em;
+    color: silver;
+    padding: 0;
+    
+}
+
+.rightArrow{
+    float: right;
+    margin-top: 50%;
+     font-size: 3em;
+    color: silver
+}
+
+.modalInfo2{
+    border-top: 1px solid silver;
+    align-self: center;
+    width: 90%;
+    margin:auto;
+}
+
+.modalnames{
+    text-transform: capitalize;
+    font-weight: 700;
+    color: #393e44;
+}
+.modalemails,
+.modalcities,
+.modalInfo2{
+    color: silver;
+}
+
+@media screen and (min-width: 800px) {
+    #contentheadeWraper{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    #title{
+        width: 50%;
+        
+    }
+    #search{
+       
+        width: 50%;
+    }
+    #employeesProfilesContainer{
+        display: grid;
+        grid-template-columns: repeat(2, minmax(300px, 1fr));
+        grid-gap: 20px;
+    }
+   
+}
+
+
+
+@media screen and (min-width: 960px) {
+    #title{
+    text-align: left;
+}
+    #employeesProfilesContainer{
+        display: grid;
+        grid-template-columns: repeat(3, minmax(350px, 1fr));
+        grid-gap: 20px;
+    }
+
+
 }
