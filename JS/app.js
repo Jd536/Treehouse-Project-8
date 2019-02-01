@@ -62,20 +62,73 @@ var employeesRawData;
     
         });
     });
-   
+    function abbreviateState(input, to){
+        var states = [
+            ['Arizona', 'AZ'],
+            ['Alabama', 'AL'],
+            ['Alaska', 'AK'],
+            ['Arizona', 'AZ'],
+            ['Arkansas', 'AR'],
+            ['California', 'CA'],
+            ['Colorado', 'CO'],
+            ['Connecticut', 'CT'],
+            ['Delaware', 'DE'],
+            ['Florida', 'FL'],
+            ['Georgia', 'GA'],
+            ['Hawaii', 'HI'],
+            ['Idaho', 'ID'],
+            ['Illinois', 'IL'],
+            ['Indiana', 'IN'],
+            ['Iowa', 'IA'],
+            ['Kansas', 'KS'],
+            ['Kentucky', 'KY'],
+            ['Kentucky', 'KY'],
+            ['Louisiana', 'LA'],
+            ['Maine', 'ME'],
+            ['Maryland', 'MD'],
+            ['Massachusetts', 'MA'],
+            ['Michigan', 'MI'],
+            ['Minnesota', 'MN'],
+            ['Mississippi', 'MS'],
+            ['Missouri', 'MO'],
+            ['Montana', 'MT'],
+            ['Nebraska', 'NE'],
+            ['Nevada', 'NV'],
+            ['New Hampshire', 'NH'],
+            ['New Jersey', 'NJ'],
+            ['New Mexico', 'NM'],
+            ['New York', 'NY'],
+            ['North Carolina', 'NC'],
+            ['North Dakota', 'ND'],
+            ['Ohio', 'OH'],
+            ['Oklahoma', 'OK'],
+            ['Oregon', 'OR'],
+            ['Pennsylvania', 'PA'],
+            ['Rhode Island', 'RI'],
+            ['South Carolina', 'SC'],
+            ['South Dakota', 'SD'],
+            ['Tennessee', 'TN'],
+            ['Texas', 'TX'],
+            ['Utah', 'UT'],
+            ['Vermont', 'VT'],
+            ['Virginia', 'VA'],
+            ['Washington', 'WA'],
+            ['West Virginia', 'WV'],
+            ['Wisconsin', 'WI'],
+            ['Wyoming', 'WY'],
+        ];
+        if (to == 'abbr'){
+          input = input.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+          for(i = 0; i < states.length; i++){
+            if(states[i][0] == input){
+              return(states[i][1]);
+            }
+          }    
+        }
+      }
   
-
-      
-    
-// Create a modal HTML (create a calll back function that can be used in the click event) street name and number, city, state, and postcode. 
-
-
-let generateModalHTML = function(employeesRawData, i){
-                 numberOfEmployees= employeesRawData.length;
-//                 console.log(numberOfEmployees);
-                    let index = i;
-    const modal = document.createElement('div');
-                let dateOfBirth= new Date(employeesRawData[i].dob.date);
+const formatDate = function(dateArray, i){
+    let dateOfBirth= new Date(dateArray[i].dob.date);
                 let dd = dateOfBirth.getDate();
                 let mm = dateOfBirth.getMonth() + 1;
                 let year = dateOfBirth.getFullYear();
@@ -86,6 +139,19 @@ let generateModalHTML = function(employeesRawData, i){
                     mm = '0' + mm;
                   }
                 let employeeDob = `${mm}/${dd}/${year}`;
+                return employeeDob;
+}
+      
+    
+// Create a modal HTML (create a calll back function that can be used in the click event) street name and number, city, state, and postcode. 
+
+
+let generateModalHTML = function(employeesRawData, i){
+                 numberOfEmployees= employeesRawData.length;
+//                 console.log(numberOfEmployees);
+                    let index = i;
+    const modal = document.createElement('div');
+                let employeeDob=formatDate(employeesRawData,i);
                 modal.id=i;
                 modal.className='modal';
                 modal.innerHTML = 
@@ -101,7 +167,7 @@ let generateModalHTML = function(employeesRawData, i){
                     </div>
                     <div class="modalInfo2">
                         <p class="modalphone">${employeesRawData[i].cell}</p>
-                        <p class="modaladdress">${employeesRawData[i].location.street} ${employeesRawData[i].location.city} ,  ${employeesRawData[i].location.state} ${employeesRawData[i].location.postcode }</p>
+                        <p class="modaladdress">${employeesRawData[i].location.street} ${employeesRawData[i].location.city}, ${abbreviateState(employeesRawData[i].location.state, 'abbr')}  ${employeesRawData[i].location.postcode }</p>
                         <p class="birthdate"> Birthday : ${employeeDob}</p>
                     </div>
                
