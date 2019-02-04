@@ -200,23 +200,7 @@ body{
         grid-template-columns: repeat(2, minmax(300px, 1fr));
         grid-gap: 20px;
     }
-/*
-    .leftArrow{
-    float: left;
-     margin-top: 60%;
-    font-size: 3em;
-    color: silver;
-    padding: 0;
-    
-}
 
-.rightArrow{
-    float: right;
-    margin-top: 60%;
-     font-size: 3em;
-    color: silver
-}
-*/
    
 }
 
